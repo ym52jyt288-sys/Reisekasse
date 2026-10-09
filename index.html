@@ -3,45 +3,108 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Reisekasse SOA</title>
+  <title>Reisekasse</title>
   <meta name="description" content="Offline-Währungsrechner für Thailand, Laos und Kambodscha">
-  <meta name="theme-color" content="#0f766e">
+  <meta name="theme-color" content="#F3F4F7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1116" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Reisekasse">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icons/icon-192.png">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="top">
-    <h1>Reisekasse</h1>
-    <button id="btn-settings" class="icon-btn" aria-label="Kurse einstellen">⚙︎</button>
-  </header>
+  <main id="view-calc" class="view">
+    <header class="bar">
+      <h1 class="brand">Reisekasse</h1>
+      <button id="btn-settings" class="icon-btn" aria-label="Kurse einstellen">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+      </button>
+    </header>
 
-  <main id="view-calc">
-    <ul id="currency-list" class="currency-list"></ul>
-
-    <div class="quick">
-      <div class="quick-label">Schnellbeträge <span id="quick-cur"></span></div>
-      <div id="quick-buttons" class="quick-buttons"></div>
+    <div id="tabs" class="tabs" role="tablist" aria-label="Reiseland">
+      <button role="tab" data-country="THB">Thailand</button>
+      <button role="tab" data-country="LAK">Laos</button>
+      <button role="tab" data-country="KHR">Kambodscha</button>
     </div>
 
-    <div class="status-bar">
-      <p id="status" class="status"></p>
-      <button id="btn-refresh" class="btn">Kurse aktualisieren</button>
+    <section class="card" aria-label="Umrechnung">
+      <div class="label-row">
+        <span id="in-name" class="label"></span>
+        <button id="btn-clear" class="clear" aria-label="Eingabe löschen">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div id="in-amount" class="amount in">
+        <span id="in-num" class="num"></span><span class="caret" aria-hidden="true"></span><span id="in-sym" class="sym"></span>
+      </div>
+
+      <div class="divider">
+        <button id="btn-swap" class="swap" aria-label="Richtung tauschen">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4v16M4 16l4 4 4-4"/><path d="M16 20V4M12 8l4-4 4 4"/></svg>
+        </button>
+      </div>
+
+      <div class="label-row"><span id="out-name" class="label"></span></div>
+      <div id="out-amount" class="amount out" aria-live="polite">
+        <span id="out-num" class="num"></span><span id="out-sym" class="sym"></span>
+      </div>
+
+      <div id="others" class="others" aria-label="Weitere Währungen"></div>
+    </section>
+
+    <div class="meta">
+      <span id="rate-line"></span>
+      <button id="btn-refresh" class="status">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
+        <span id="status-text"></span>
+      </button>
+    </div>
+
+    <div class="pad">
+      <div id="chips" class="chips"></div>
+      <div id="keys" class="keys">
+        <button data-key="1">1</button>
+        <button data-key="2">2</button>
+        <button data-key="3">3</button>
+        <button data-key="4">4</button>
+        <button data-key="5">5</button>
+        <button data-key="6">6</button>
+        <button data-key="7">7</button>
+        <button data-key="8">8</button>
+        <button data-key="9">9</button>
+        <button id="key-dec" class="alt" data-key="," aria-label="Komma">,</button>
+        <button data-key="0">0</button>
+        <button class="alt" data-key="back" aria-label="Löschen, lang drücken löscht alles">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 5H9l-6 7 6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/><path d="M17 9l-6 6M11 9l6 6"/></svg>
+        </button>
+      </div>
     </div>
   </main>
 
-  <section id="view-settings" class="settings" hidden>
-    <h2>Wechselkurse</h2>
-    <p class="hint">Online-Kurse werden automatisch geladen. Mit „manuell“ legst du einen eigenen Kurs fest (z.&nbsp;B. den der Wechselstube) – er wird beim Aktualisieren nicht überschrieben.</p>
-    <label class="dir-toggle">
-      <input type="checkbox" id="chk-inverse"> Eingabe als „1 Fremdwährung = … EUR“
-    </label>
-    <div id="settings-list"></div>
-    <button id="btn-back" class="btn btn-primary">Fertig</button>
+  <section id="view-settings" class="view settings" hidden>
+    <header class="bar">
+      <h1 class="brand">Wechselkurse</h1>
+      <button id="btn-back" class="text-btn">Fertig</button>
+    </header>
+
+    <div id="dir-tabs" class="tabs two" role="tablist" aria-label="Kursangabe">
+      <button role="tab" data-inverse="0">1 € = … Landeswährung</button>
+      <button role="tab" data-inverse="1">1 Landeswährung = … €</button>
+    </div>
+
+    <p class="hint">Online-Kurse werden automatisch geladen. Mit „Eigener Kurs“ trägst du z.&nbsp;B. den Kurs der Wechselstube ein – er bleibt beim Aktualisieren erhalten.</p>
+
+    <div id="settings-list" class="group"></div>
+
+    <button id="btn-refresh-2" class="list-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
+      <span>Online-Kurse jetzt laden</span>
+    </button>
+    <p id="source-line" class="source"></p>
   </section>
 
   <script src="app.js"></script>

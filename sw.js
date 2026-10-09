@@ -1,5 +1,5 @@
 // Bei jeder Änderung an App-Dateien die Version erhöhen, damit Handys das Update laden.
-const CACHE = 'fx-v1';
+const CACHE = 'fx-v2';
 const SHELL = [
   './',
   'index.html',
@@ -9,6 +9,8 @@ const SHELL = [
   'icons/icon-192.png',
   'icons/icon-512.png',
   'icons/apple-touch-icon.png',
+  'icons/icon-maskable-512.png',
+  'icons/icon.svg',
 ];
 
 self.addEventListener('install', event => {
