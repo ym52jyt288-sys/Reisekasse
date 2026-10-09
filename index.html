@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Reisekasse SOA</title>
+  <meta name="description" content="Offline-Währungsrechner für Thailand, Laos und Kambodscha">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Reisekasse">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Reisekasse</h1>
+    <button id="btn-settings" class="icon-btn" aria-label="Kurse einstellen">⚙︎</button>
+  </header>
+
+  <main id="view-calc">
+    <ul id="currency-list" class="currency-list"></ul>
+
+    <div class="quick">
+      <div class="quick-label">Schnellbeträge <span id="quick-cur"></span></div>
+      <div id="quick-buttons" class="quick-buttons"></div>
+    </div>
+
+    <div class="status-bar">
+      <p id="status" class="status"></p>
+      <button id="btn-refresh" class="btn">Kurse aktualisieren</button>
+    </div>
+  </main>
+
+  <section id="view-settings" class="settings" hidden>
+    <h2>Wechselkurse</h2>
+    <p class="hint">Online-Kurse werden automatisch geladen. Mit „manuell“ legst du einen eigenen Kurs fest (z.&nbsp;B. den der Wechselstube) – er wird beim Aktualisieren nicht überschrieben.</p>
+    <label class="dir-toggle">
+      <input type="checkbox" id="chk-inverse"> Eingabe als „1 Fremdwährung = … EUR“
+    </label>
+    <div id="settings-list"></div>
+    <button id="btn-back" class="btn btn-primary">Fertig</button>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

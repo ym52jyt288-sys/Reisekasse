@@ -1,0 +1,115 @@
+:root {
+  --bg: #f5f5f4;
+  --card: #ffffff;
+  --text: #1c1917;
+  --muted: #78716c;
+  --border: #e7e5e4;
+  --accent: #0f766e;
+  --accent-soft: #ccfbf1;
+  --warn: #b45309;
+  --warn-soft: #fef3c7;
+  --error: #b91c1c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0a09;
+    --card: #1c1917;
+    --text: #f5f5f4;
+    --muted: #a8a29e;
+    --border: #292524;
+    --accent: #2dd4bf;
+    --accent-soft: #134e4a;
+    --warn: #fbbf24;
+    --warn-soft: #451a03;
+    --error: #f87171;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: env(safe-area-inset-top) 16px calc(16px + env(safe-area-inset-bottom));
+  max-width: 560px;
+  margin: 0 auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0;
+}
+.top h1 { font-size: 22px; margin: 0; }
+.icon-btn {
+  background: none; border: none; color: var(--text);
+  font-size: 26px; padding: 4px 8px; cursor: pointer;
+}
+
+.currency-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.cur {
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 12px;
+  background: var(--card); border: 2px solid var(--border);
+  border-radius: 14px; padding: 10px 14px;
+}
+.cur.active { border-color: var(--accent); background: var(--accent-soft); }
+.cur-meta { display: flex; flex-direction: column; min-width: 64px; }
+.cur-code { font-weight: 700; font-size: 18px; }
+.cur-code .flag { margin-right: 4px; }
+.cur-name { font-size: 12px; color: var(--muted); }
+.cur-badge {
+  font-size: 11px; color: var(--warn); background: var(--warn-soft);
+  border-radius: 6px; padding: 0 5px; margin-top: 2px; align-self: flex-start;
+}
+.cur input {
+  width: 100%; min-width: 0;
+  font-size: 26px; font-weight: 600; text-align: right;
+  border: none; background: transparent; color: var(--text);
+  font-variant-numeric: tabular-nums; outline: none; padding: 4px 0;
+}
+
+.quick { margin-top: 16px; }
+.quick-label { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.quick-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.quick-buttons button {
+  flex: 1 1 0; min-width: 52px;
+  background: var(--card); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 8px; font-size: 15px; font-variant-numeric: tabular-nums; cursor: pointer;
+}
+.quick-buttons button:active { background: var(--accent-soft); }
+
+.status-bar { margin-top: 20px; display: grid; gap: 10px; }
+.status { margin: 0; font-size: 13px; color: var(--muted); text-align: center; }
+.status.error { color: var(--error); }
+
+.btn {
+  font-size: 16px; padding: 12px; border-radius: 12px; cursor: pointer;
+  background: var(--card); color: var(--accent); border: 1px solid var(--accent);
+  width: 100%;
+}
+.btn:disabled { opacity: .5; }
+.btn-primary { background: var(--accent); color: var(--card); border: none; margin-top: 16px; }
+
+.settings h2 { margin: 4px 0 8px; font-size: 20px; }
+.hint { font-size: 14px; color: var(--muted); margin: 0 0 12px; }
+.dir-toggle { display: flex; gap: 8px; align-items: center; font-size: 14px; margin-bottom: 12px; }
+.set-row {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 12px 14px; margin-bottom: 8px; display: grid; gap: 8px;
+}
+.set-head { display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
+.set-head label { font-weight: 400; font-size: 14px; display: flex; gap: 6px; align-items: center; }
+.set-input { display: flex; align-items: center; gap: 8px; font-size: 15px; }
+.set-input input {
+  flex: 1; min-width: 0; font-size: 18px; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg); color: var(--text); text-align: right;
+}
+.set-input input:disabled { opacity: .6; }
+.set-online { font-size: 12px; color: var(--muted); }
+.set-online button {
+  background: none; border: none; color: var(--accent); font-size: 12px;
+  padding: 0; margin-left: 6px; text-decoration: underline; cursor: pointer;
+}
