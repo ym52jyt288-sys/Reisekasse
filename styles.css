@@ -67,6 +67,15 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   flex-direction: column;
 }
 
+/* Der Rechner ist genau so hoch wie der sichtbare Bildschirm (ohne vh, das auf dem iPhone
+   zu hoch ausfallen kann) und scrollt nicht. Fehlt Platz, werden die Tasten niedriger. */
+#view-calc {
+  position: fixed;
+  inset: 0;
+  min-height: 0;
+  overflow-y: auto; /* nur falls selbst kleine Tasten nicht passen, z. B. bei quer gehaltenem Handy */
+}
+
 /* ---------- Kopfzeile ---------- */
 
 .bar {
@@ -253,7 +262,8 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* ---------- Schnellbeträge & Tastatur ---------- */
 
 .pad {
-  margin-top: auto;
+  flex: 1 1 auto;
+  min-height: 0;
   padding-top: 12px;
   display: flex;
   flex-direction: column;
@@ -261,7 +271,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   user-select: none;
   -webkit-user-select: none;
 }
-.chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.chips { margin-top: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .chips button {
   height: 36px;
   border: 1px solid var(--border); border-radius: 18px;
@@ -270,9 +280,16 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   font-variant-numeric: tabular-nums;
 }
 .chips button:active { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
-.keys { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+/* Tasten höchstens 58 px hoch, bei wenig Platz bis 36 px */
+.keys {
+  flex: 0 1 calc(4 * 58px * var(--scale) + 24px);
+  min-height: calc(4 * 36px + 24px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
 .keys button {
-  height: calc(58px * var(--scale));
   border: none; border-radius: 14px;
   background: var(--key);
   font-size: 26px; font-weight: 500;
@@ -303,6 +320,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 }
 @media (max-height: 640px) {
   .chips { display: none; }
+  .keys { margin-top: auto; }
 }
 @media (max-height: 600px) {
   :root { --scale: 0.72; }

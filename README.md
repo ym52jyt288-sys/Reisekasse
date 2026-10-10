@@ -51,6 +51,6 @@ Test: Flugmodus an → App starten → muss funktionieren.
 
 ## Updates
 
-Nach Änderungen an den Dateien in `sw.js` die Version `CACHE = 'fx-v3'` hochzählen
-(`fx-v4`, …), committen und pushen. Die App holt sich das Update beim nächsten Start mit Internet
+Nach Änderungen an den Dateien in `sw.js` die Version `CACHE = 'fx-v4'` hochzählen
+(`fx-v5`, …), committen und pushen. Die App holt sich das Update beim nächsten Start mit Internet
 (ggf. App einmal schließen und neu öffnen).
