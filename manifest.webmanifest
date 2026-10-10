@@ -1,7 +1,7 @@
 {
-  "name": "Reisekasse Südostasien",
+  "name": "Reisekasse",
   "short_name": "Reisekasse",
-  "description": "Offline-Währungsrechner EUR ↔ THB, LAK, KHR, USD",
+  "description": "Offline-Währungsrechner für Reisen – 100 Währungen",
   "lang": "de",
   "start_url": "./",
   "scope": "./",

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Reisekasse</title>
-  <meta name="description" content="Offline-Währungsrechner für Thailand, Laos und Kambodscha">
+  <meta name="description" content="Offline-Währungsrechner für Reisen – 100 Währungen">
   <meta name="theme-color" content="#F3F4F7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0E1116" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,16 +20,12 @@
   <main id="view-calc" class="view">
     <header class="bar">
       <h1 class="brand">Reisekasse</h1>
-      <button id="btn-settings" class="icon-btn" aria-label="Kurse einstellen">
+      <button id="btn-settings" class="icon-btn" aria-label="Einstellungen">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
       </button>
     </header>
 
-    <div id="tabs" class="tabs" role="tablist" aria-label="Reiseland">
-      <button role="tab" data-country="THB">Thailand</button>
-      <button role="tab" data-country="LAK">Laos</button>
-      <button role="tab" data-country="KHR">Kambodscha</button>
-    </div>
+    <div id="tabs" class="tabs" role="tablist" aria-label="Reiseland"></div>
 
     <section class="card" aria-label="Umrechnung">
       <div class="label-row">
@@ -87,18 +83,35 @@
 
   <section id="view-settings" class="view settings" hidden>
     <header class="bar">
-      <h1 class="brand">Wechselkurse</h1>
+      <h1 class="brand">Einstellungen</h1>
       <button id="btn-back" class="text-btn">Fertig</button>
     </header>
 
+    <h2 class="section">Meine Währung</h2>
+    <button id="btn-home" class="nav-row">
+      <span id="home-flag" class="badge flag" aria-hidden="true"></span>
+      <span class="set-name"><b id="home-name"></b><small id="home-sub"></small></span>
+      <span class="nav-hint">Ändern</span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+
+    <h2 class="section">Reiseländer und Kurse</h2>
     <div id="dir-tabs" class="tabs two" role="tablist" aria-label="Kursangabe">
-      <button role="tab" data-inverse="0">1 € = … Landeswährung</button>
-      <button role="tab" data-inverse="1">1 Landeswährung = … €</button>
+      <button role="tab" data-inverse="0"></button>
+      <button role="tab" data-inverse="1"></button>
     </div>
 
     <p class="hint">Online-Kurse werden automatisch geladen. Mit „Eigener Kurs“ trägst du z.&nbsp;B. den Kurs der Wechselstube ein – er bleibt beim Aktualisieren erhalten.</p>
 
-    <div id="settings-list" class="group"></div>
+    <div class="group">
+      <div id="settings-list"></div>
+      <button id="btn-countries" class="add-row">
+        <span class="badge" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+        <span>Länder hinzufügen oder entfernen</span>
+      </button>
+    </div>
 
     <button id="btn-refresh-2" class="list-btn">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
@@ -107,6 +120,22 @@
     <p id="source-line" class="source"></p>
   </section>
 
+  <section id="view-picker" class="view picker" hidden>
+    <div class="picker-head">
+      <header class="bar">
+        <h1 id="picker-title" class="brand"></h1>
+        <button id="btn-picker-done" class="text-btn">Fertig</button>
+      </header>
+      <label class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+        <input id="picker-search" type="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Suchen">
+      </label>
+      <p id="picker-note" class="picker-note" aria-live="polite"></p>
+    </div>
+    <div id="picker-list"></div>
+  </section>
+
+  <script src="currencies.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

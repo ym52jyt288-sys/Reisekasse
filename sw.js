@@ -1,9 +1,10 @@
 // Bei jeder Änderung an App-Dateien die Version erhöhen, damit Handys das Update laden.
-const CACHE = 'fx-v2';
+const CACHE = 'fx-v3';
 const SHELL = [
   './',
   'index.html',
   'styles.css',
+  'currencies.js',
   'app.js',
   'manifest.webmanifest',
   'icons/icon-192.png',

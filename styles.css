@@ -93,26 +93,33 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---------- Segmente (Länder, Kursrichtung) ---------- */
 
+/* Gleich breite Tabs, solange sie passen – bei vielen Ländern scrollt die Leiste. */
 .tabs {
+  position: relative;
   margin-top: 8px;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
   gap: 2px;
   padding: 3px;
   border-radius: 12px;
   background: var(--track);
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-.tabs.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .tabs button {
+  flex: 1 1 0;
+  min-width: max-content;
   min-height: 36px;
-  padding: 4px 6px;
+  padding: 4px 12px;
   border: none; border-radius: 9px;
   background: transparent;
   color: var(--muted);
   font-size: 15px; font-weight: 600;
+  white-space: nowrap;
   transition: background-color .15s, color .15s;
 }
-.tabs.two button { font-size: 13px; }
+.tabs.two button { min-width: 0; padding: 4px 6px; font-size: 13px; white-space: normal; }
 .tabs button[aria-selected="true"] {
   background: var(--tab-sel);
   color: var(--text);
@@ -304,6 +311,37 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---------- Einstellungen ---------- */
 
+.section {
+  margin: 22px 4px 8px;
+  font-size: 13px; font-weight: 600;
+  color: var(--muted);
+}
+.nav-row, .add-row, .pick-row {
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 16px;
+  border: none;
+  background: var(--surface);
+  display: flex; align-items: center; gap: 12px;
+  text-align: left;
+}
+.nav-row { border-radius: 20px; }
+.nav-row:active, .add-row:active, .pick-row:active:not(:disabled) { background: var(--track); }
+.nav-hint { font-size: 15px; color: var(--accent); }
+@media (max-width: 359px) { .nav-hint { display: none; } }
+.chev { flex: none; margin-right: -4px; color: var(--faint); }
+.add-row {
+  border-top: 1px solid var(--line);
+  color: var(--accent);
+  font-size: 16px; font-weight: 600;
+}
+.add-row .badge { background: var(--accent-soft); }
+.nav-row .set-name > *, .pick-row .set-name > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .hint {
   margin: 14px 4px;
   font-size: 13px;
@@ -315,7 +353,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   background: var(--surface);
   overflow: hidden;
 }
-.set-row { padding: 14px 16px; display: grid; gap: 10px; }
+.set-row { padding: 14px 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
 .set-row + .set-row { border-top: 1px solid var(--line); }
 .set-top { display: flex; align-items: center; gap: 12px; }
 .badge {
@@ -325,7 +363,9 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   display: grid; place-items: center;
   font-size: 17px; font-weight: 600;
 }
-.set-name { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.badge.flag { font-size: 21px; line-height: 1; }
+/* Lange Namen ("Zentralafrika", "Trinidad-und-Tobago-Dollar") umbrechen statt die Zeile zu sprengen */
+.set-name { flex: 1; min-width: 0; display: flex; flex-direction: column; hyphens: auto; overflow-wrap: anywhere; }
 .set-name b { font-size: 16px; font-weight: 600; }
 .set-name small { font-size: 12px; color: var(--muted); }
 
@@ -402,3 +442,41 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .list-btn.loading svg { animation: spin .9s linear infinite; }
 .source { margin: 10px 4px 0; font-size: 12px; color: var(--muted); text-align: center; }
 .source.error { color: var(--warn); }
+
+/* ---------- Länderauswahl ---------- */
+
+.picker-head {
+  position: sticky; top: 0; z-index: 1;
+  margin: calc(-8px - env(safe-area-inset-top)) -16px 0;
+  padding: calc(env(safe-area-inset-top) + 8px) 16px 4px;
+  background: var(--bg);
+}
+.search { position: relative; display: block; margin-top: 4px; }
+.search svg {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--faint);
+  pointer-events: none;
+}
+.search input {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 42px;
+  padding: 0 12px 0 38px;
+  border: none; border-radius: 12px;
+  background: var(--track);
+  color: var(--text);
+  font: inherit; font-size: 16px;
+}
+.search input::placeholder { color: var(--faint); }
+.search input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+.picker-note { margin: 8px 4px 4px; font-size: 13px; color: var(--muted); }
+.picker-note.error { color: var(--warn); }
+.picker .section:first-child { margin-top: 10px; }
+
+.pick-row { background: none; }
+.pick-row + .pick-row { border-top: 1px solid var(--line); }
+.pick-row .check { flex: none; color: var(--accent); visibility: hidden; }
+.pick-row[aria-pressed="true"] .check { visibility: visible; }
+.pick-row:disabled { cursor: default; }
+.pick-row:disabled > :not(.check) { opacity: .45; }
+.empty { margin: 40px 16px; text-align: center; font-size: 15px; color: var(--muted); }
