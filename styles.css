@@ -70,10 +70,14 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* Der Rechner nutzt den sichtbaren Bildschirm und scrollt bei Platzmangel. */
 #view-calc {
   position: fixed;
-  inset: 0;
+  inset: 0 0 auto;
+  height: 100vh;
+  height: 100dvh;
   min-height: 0;
   overflow-y: auto;
 }
+
+#view-calc > :not(.pad) { flex-shrink: 0; }
 
 /* ---------- Kopfzeile ---------- */
 
@@ -163,6 +167,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .clear:active { background: var(--track); }
 
 .amount {
+  container-type: inline-size;
   --size: 46px;
   display: flex;
   align-items: baseline;
@@ -176,6 +181,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .amount.xs { --size: 28px; }
 .amount .num {
   font-size: calc(var(--size) * var(--scale));
+  font-size: min(calc(var(--size) * var(--scale)), calc((100cqw - 74px) / var(--number-width)));
   font-weight: 600;
   letter-spacing: -0.025em;
   font-variant-numeric: tabular-nums;
@@ -218,10 +224,14 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .others {
   margin-top: 10px;
   display: flex;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  scrollbar-width: none;
   gap: 6px;
 }
+.others:empty { display: none; }
 .others button {
+  flex: none;
+  white-space: nowrap;
   height: 30px;
   padding: 0 10px;
   border: none; border-radius: 15px;
@@ -262,7 +272,8 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* ---------- Schnellbeträge & Tastatur ---------- */
 
 .pad {
-  flex: 1 0 auto;
+  min-height: 0;
+  flex: 1 1 auto;
   padding-top: 12px;
   display: flex;
   flex-direction: column;
@@ -270,7 +281,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   user-select: none;
   -webkit-user-select: none;
 }
-.chips { margin-top: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.chips { flex: none; margin-top: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .chips button {
   height: 36px;
   padding: 0 4px;
@@ -281,10 +292,10 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   font-variant-numeric: tabular-nums;
 }
 .chips button:active { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
-/* Die Fensterhöhe bestimmt die Tastengröße unabhängig vom Rechnerinhalt. */
+/* Die vier Tastenreihen teilen sich den nach den Schnellbeträgen freien Platz. */
 .keys {
-  flex: none;
-  height: calc(4 * 58px * var(--scale) + 24px);
+  flex: 0 1 calc(232px * var(--scale) + 24px);
+  min-height: 168px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(4, minmax(0, 1fr));
@@ -319,12 +330,56 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .pad { padding-top: 8px; }
   .chips button { height: 32px; }
 }
-@media (max-height: 640px) {
-  .keys { height: calc(4 * 36px + 24px); }
+@media (max-height: 760px) {
+  .chips { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: minmax(max-content, 26%); overflow-x: auto; scrollbar-width: none; }
+  .chips button { padding-inline: 8px; }
 }
 @media (max-height: 600px) {
   :root { --scale: 0.72; }
   .others { display: none; }
+}
+
+@media (max-height: 600px) and (min-width: 500px) and (orientation: landscape) {
+  #view-calc {
+    max-width: 960px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: 16px;
+  }
+  #view-calc > :not(.pad) { grid-column: 1; }
+  .meta { align-self: start; }
+  .pad { grid-column: 2; grid-row: 1 / 5; min-width: 0; justify-content: center; padding-top: 0; }
+  .chips { margin-top: 0; grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .keys { flex-basis: 210px; }
+}
+
+@media (max-height: 600px) {
+  #view-calc .bar, #view-calc .icon-btn { min-height: 36px; height: 36px; }
+  #view-calc .card { margin-top: 5px; padding-block: 4px; }
+  #view-calc .label-row { min-height: 20px; }
+  #view-calc .label-row:first-child { min-height: 28px; }
+  .clear { width: 28px; height: 28px; }
+  .divider { margin: 8px 0; }
+  .swap { top: -14px; width: 30px; height: 30px; margin-left: -15px; }
+  .amount { height: 38px; }
+  .pad { gap: 6px; }
+  .keys { gap: 4px; min-height: 152px; }
+}
+
+@media (max-width: 499px) and (max-height: 510px) {
+  #view-calc { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto auto minmax(0, 1fr); column-gap: 8px; }
+  #view-calc .bar, #view-calc .tabs { grid-row: 1; }
+  #view-calc .icon-btn { margin-right: 0; }
+  #view-calc .card, #view-calc .meta, #view-calc .pad { grid-column: 1 / -1; }
+}
+@media (orientation: landscape) and (max-height: 350px) {
+  #view-calc .card { margin-top: 0; padding: 0 8px; }
+  #view-calc .amount { height: 34px; }
+  #view-calc .status { padding-block: 3px; }
+  #view-calc .meta { min-height: 24px; }
 }
 
 /* ---------- Einstellungen ---------- */
@@ -497,4 +552,4 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .pick-row[aria-pressed="true"] .check { visibility: visible; }
 .pick-row:disabled { cursor: default; }
 .pick-row:disabled > :not(.check) { opacity: .45; }
-.empty { margin: 40px 16px; text-align: center; font-size: 15px; color: var(--muted); }
+.picker .empty { margin: 40px 16px; text-align: center; font-size: 15px; color: var(--muted); }

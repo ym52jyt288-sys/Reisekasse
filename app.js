@@ -245,6 +245,8 @@ const $ = id => document.getElementById(id);
 
 function setAmount(box, numEl, text) {
   numEl.textContent = text;
+  // Breite der tabellarischen Ziffern in em, mit Platz für das Währungssymbol.
+  box.style.setProperty('--number-width', String(text.length * 0.64));
   box.classList.remove('m', 's', 'xs');
   const cls = sizeClass(text);
   if (cls) box.classList.add(cls);

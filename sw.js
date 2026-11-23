@@ -1,5 +1,5 @@
 // Bei jeder Änderung an App-Dateien die Version erhöhen, damit Handys das Update laden.
-const CACHE = 'fx-v5';
+const CACHE = 'fx-v6';
 const SHELL = [
   './',
   'index.html',
